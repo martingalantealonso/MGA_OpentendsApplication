@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">OpentendsApplication</string>
+    <string name="Nombre">text_view_hero_name</string>
+    <string name="Descripción">text_view_hero_description</string>
+</resources>
