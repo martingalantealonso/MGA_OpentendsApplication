@@ -2,4 +2,6 @@
     <string name="app_name">OpentendsApplication</string>
     <string name="Nombre">text_view_hero_name</string>
     <string name="Descripción">text_view_hero_description</string>
+    <string name="hint_name_to_search">nombre a buscar</string>
+    <string name="first_activity_title">Busca tu super-héroe</string>
 </resources>
