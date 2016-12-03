@@ -1,7 +1,13 @@
 package com.galante.martin.opentendsapplication.activities;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,11 +16,16 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewConfiguration;
+import android.view.Window;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
 import com.galante.martin.opentendsapplication.HeroCharacter;
 import com.galante.martin.opentendsapplication.HeroListRcVwAdapter;
@@ -25,6 +36,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -124,10 +136,47 @@ public class FirstActivity extends AppCompatActivity {
     HeroListRcVwAdapter.OnItemClickListener onItemClickListener = new HeroListRcVwAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(View v, int position) {
-            //Toast.makeText(FirstActivity.this, "Clicked " + position, Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(FirstActivity.this, SecondActivity.class);
-            intent.putExtra(String.valueOf(SecondActivity.EXTRA_PARAM_ID), position);
-            startActivity(intent);
+
+            LinearLayout placeNameHolder = (LinearLayout) v.findViewById(R.id.main_information_holder);
+            NetworkImageView heroImage = (NetworkImageView) v.findViewById(R.id.network_image_view);
+            TextView heroName = (TextView) v.findViewById(R.id.text_view_name);
+            TextView heroDescription = (TextView) v.findViewById(R.id.text_view_description);
+
+
+            //To get the Bitmap image
+            Bitmap _bitmap = ((BitmapDrawable) heroImage.getDrawable()).getBitmap();
+            ByteArrayOutputStream _bs = new ByteArrayOutputStream();
+            if (_bitmap != null) {
+                _bitmap.compress(Bitmap.CompressFormat.PNG, 50, _bs);
+            }
+            Intent transitionIntent = new Intent(FirstActivity.this, SecondActivity.class);
+            transitionIntent.putExtra(String.valueOf(SecondActivity.EXTRA_PARAM_ID), position);
+            transitionIntent.putExtra(String.valueOf(SecondActivity.EXTRA_PARAM_NAME), heroName.getText().toString());
+            transitionIntent.putExtra(String.valueOf(SecondActivity.EXTRA_PARAM_DESCRIPTION), heroDescription.getText().toString());
+            transitionIntent.putExtra(String.valueOf(SecondActivity.EXTRA_PARAM_IMAGE), _bs.toByteArray());
+
+
+            View navigationBar = findViewById(android.R.id.navigationBarBackground);
+            View statusBar = findViewById(android.R.id.statusBarBackground);
+
+            Pair<View, String> holderPair = Pair.create((View) placeNameHolder, "tNameHolder");
+            Pair<View, String> navPair = Pair.create(navigationBar, Window.NAVIGATION_BAR_BACKGROUND_TRANSITION_NAME);
+            Pair<View, String> statusPair = Pair.create(statusBar, Window.STATUS_BAR_BACKGROUND_TRANSITION_NAME);
+
+            // If the device has NavigationBar
+            ActivityOptionsCompat options;
+            if (ViewConfiguration.get(getApplicationContext()).hasPermanentMenuKey()) {
+                options = ActivityOptionsCompat.makeSceneTransitionAnimation(FirstActivity.this, holderPair, navPair, statusPair);
+            } else {
+                options = ActivityOptionsCompat.makeSceneTransitionAnimation(FirstActivity.this, holderPair, statusPair);
+            }
+            ActivityCompat.startActivity(FirstActivity.this, transitionIntent, options.toBundle());
+        }
+
+
+        public boolean hasNavBar(Resources resources) {
+            int id = resources.getIdentifier("config_showNavigationBar", "bool", "android");
+            return id > 0 && resources.getBoolean(id);
         }
     };
 }

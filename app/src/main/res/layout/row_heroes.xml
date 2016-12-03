@@ -20,7 +20,8 @@
         android:id="@+id/main_information_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:transitionName="tNameHolder">
 
         <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/network_image_view"
@@ -43,7 +44,8 @@
                 android:layout_marginStart="10dp"
                 android:gravity="center_vertical"
                 android:text="@string/Nombre"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:transitionName="tName" />
 
             <TextView
                 android:id="@+id/text_view_description"
@@ -51,7 +53,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:maxLines="2"
-                android:text="@string/Descripción" />
+                android:text="@string/Descripción"
+                android:transitionName="tDescription" />
 
         </LinearLayout>
 

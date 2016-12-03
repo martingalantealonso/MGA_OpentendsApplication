@@ -11,6 +11,16 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.galante.martin.opentendsapplication.activities.FirstActivity">
 
+    <TextView
+        android:text="Busca tu superheroe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textAlignment="center"
+        android:textStyle="normal|bold"
+        android:fontFamily="sans-serif-medium" />
+
     <EditText
         android:id="@+id/ed_txt_search"
         android:layout_width="match_parent"

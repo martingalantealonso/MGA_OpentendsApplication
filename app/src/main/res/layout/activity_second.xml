@@ -16,10 +16,11 @@
         android:id="@+id/main_information_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:transitionName="tNameHolder">
 
-        <com.android.volley.toolbox.NetworkImageView
-            android:id="@+id/network_image_view"
+        <ImageView
+            android:id="@+id/image_view"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
@@ -39,7 +40,8 @@
                 android:layout_marginStart="10dp"
                 android:gravity="center_vertical"
                 android:text="@string/Nombre"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:transitionName="tName" />
 
             <TextView
                 android:id="@+id/text_view_description"
@@ -47,7 +49,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:maxLines="2"
-                android:text="@string/Descripción" />
+                android:text="@string/Descripción"
+                android:transitionName="tDescription" />
 
         </LinearLayout>
 
@@ -69,25 +72,25 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/btn_details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="Detalles" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/btn_wiki"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="Wiki" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btn_comics"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="Comics" />
     </LinearLayout>
 
     <TextView
@@ -99,44 +102,5 @@
         android:text="Recursos"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textStyle="normal|bold" />
-
-    <TabHost
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TabWidget
-                android:id="@android:id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <FrameLayout
-                android:id="@android:id/tabcontent"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:id="@+id/tab1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/tab2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                </LinearLayout>
-
-            </FrameLayout>
-        </LinearLayout>
-    </TabHost>
 
 </LinearLayout>
