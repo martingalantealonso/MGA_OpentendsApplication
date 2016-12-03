@@ -4,7 +4,7 @@
     android:id="@+id/heroCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_margin="5dp"
     card_view:cardCornerRadius="@dimen/card_corner_radius"
     card_view:cardElevation="@dimen/card_elevation">
 
@@ -26,12 +26,13 @@
             android:id="@+id/network_image_view"
             android:layout_width="0dp"
             android:layout_height="60dp"
+            android:layout_gravity="center"
             android:layout_weight=".25"
-            android:src="@mipmap/ic_launcher" />
+            android:scaleType="fitXY" />
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight=".75"
             android:orientation="vertical">
 
@@ -42,15 +43,15 @@
                 android:layout_marginStart="10dp"
                 android:gravity="center_vertical"
                 android:text="@string/Nombre"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             <TextView
                 android:id="@+id/text_view_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="@string/Descripción"
-                android:maxLines="2"/>
+                android:maxLines="2"
+                android:text="@string/Descripción" />
 
         </LinearLayout>
 

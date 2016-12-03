@@ -1,10 +1,12 @@
 package com.galante.martin.opentendsapplication;
 
+import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -18,14 +20,20 @@ import java.util.List;
 
 public class HeroListRcVwAdapter extends RecyclerView.Adapter<HeroListRcVwAdapter.HeroViewHolder> {
 
-
+    Context mContext;
     List<HeroCharacter> heroesList;
+    OnItemClickListener mItemClickListener;
+
+    public HeroListRcVwAdapter(Context context) {
+        this.mContext = context;
+    }
 
     public HeroListRcVwAdapter(List<HeroCharacter> heroes) {
         this.heroesList = heroes;
     }
 
-    public static class HeroViewHolder extends RecyclerView.ViewHolder {
+    public class HeroViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public LinearLayout placeHolder;
         CardView cv;
         TextView heroName;
         TextView heroDescription;
@@ -34,12 +42,31 @@ public class HeroListRcVwAdapter extends RecyclerView.Adapter<HeroListRcVwAdapte
 
         HeroViewHolder(View itemView) {
             super(itemView);
+            placeHolder = (LinearLayout) itemView.findViewById(R.id.main_holder);
             cv = (CardView) itemView.findViewById(R.id.heroCard);
             heroName = (TextView) itemView.findViewById(R.id.text_view_name);
             heroDescription = (TextView) itemView.findViewById(R.id.text_view_description);
             heroimage = (NetworkImageView) itemView.findViewById(R.id.network_image_view);
             mImageLoader = VolleySingleton.getInstance(itemView.getContext()).getImageLoader();
+            placeHolder.setOnClickListener(this);
+
         }
+
+        @Override
+        public void onClick(View v) {
+            if (mItemClickListener != null) {
+                mItemClickListener.onItemClick(itemView, getPosition());
+            }
+        }
+
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+    public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
+        this.mItemClickListener = mItemClickListener;
     }
 
     @Override
@@ -50,11 +77,22 @@ public class HeroListRcVwAdapter extends RecyclerView.Adapter<HeroListRcVwAdapte
     }
 
     @Override
-    public void onBindViewHolder(HeroListRcVwAdapter.HeroViewHolder holder, int position) {
+    public void onBindViewHolder(final HeroListRcVwAdapter.HeroViewHolder holder, int position) {
         holder.heroName.setText(heroesList.get(position).hero_name);
         holder.heroDescription.setText(heroesList.get(position).hero_description);
         if (!heroesList.get(position).hero_image.isEmpty()) {
             holder.heroimage.setImageUrl(heroesList.get(position).hero_image, holder.mImageLoader);
+
+        /*
+        //TODO try to solvethis
+            Bitmap bitmap = ((BitmapDrawable)holder.heroimage.getDrawable()).getBitmap();
+            Palette.generateAsync(bitmap, new Palette.PaletteAsyncListener() {
+                public void onGenerated(Palette palette) {
+                    int bgColor = palette.getMutedColor(mContext.getResources().getColor(android.R.color.black));
+                    holder.placeHolder.setBackgroundColor(bgColor);
+                }
+            });
+*/
         }
     }
 
@@ -67,7 +105,6 @@ public class HeroListRcVwAdapter extends RecyclerView.Adapter<HeroListRcVwAdapte
     public int getItemCount() {
         return heroesList.size();
     }
-
 
 
 }

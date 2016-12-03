@@ -8,15 +8,19 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.Toast;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -60,9 +64,9 @@ public class FirstActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 numCharacters = edtxt_filter.length();
-                if(numCharacters<3){
+                if (numCharacters < 3) {
                     mRecyclerView.setAdapter(null);
-                }else if (numCharacters >= 3) {
+                } else if (numCharacters >= 3) {
                     api_url_namestartswith = "http://gateway.marvel.com/v1/public/characters?nameStartsWith=" + edtxt_filter.getText() + "&ts=" + ts + "&apikey=" + public_key + "&hash=" + hash;
                     StringRequest stringRequest = new StringRequest(Request.Method.GET, api_url_namestartswith,
                             new Response.Listener<String>() {
@@ -73,12 +77,10 @@ public class FirstActivity extends AppCompatActivity {
                                         JSONObject jsonResponse = new JSONObject((response));
                                         JSONObject jsonData = jsonResponse.getJSONObject("data");
                                         JSONArray jsonResults = jsonData.getJSONArray("results");
-
-                                        ArrayList<HeroCharacter> heroCharacterList = new ArrayList<HeroCharacter>();
-                                        HeroAdapter adapter = new HeroAdapter(getApplicationContext(), heroCharacterList);
                                         ArrayList<HeroCharacter> newCharacter = HeroCharacter.fromJson(jsonResults);
                                         HeroListRcVwAdapter adapter2 = new HeroListRcVwAdapter(newCharacter);
                                         mRecyclerView.setAdapter(adapter2);
+                                        adapter2.setOnItemClickListener(onItemClickListener); //Add the clicl listener
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -95,8 +97,6 @@ public class FirstActivity extends AppCompatActivity {
 
             }
         });
-
-
 
 
     }
@@ -117,12 +117,10 @@ public class FirstActivity extends AppCompatActivity {
         }
     }
 
-    private void getHeroes(JSONArray jsonArray) {
-        ArrayList<HeroCharacter> heroCharacterList = new ArrayList<HeroCharacter>();
-        HeroAdapter adapter = new HeroAdapter(this, heroCharacterList);
-        ArrayList<HeroCharacter> newCharacter = HeroCharacter.fromJson(jsonArray);
-        adapter.addAll(newCharacter);
-        ListView listView = (ListView) findViewById(R.id.lvHeroes);
-        listView.setAdapter(adapter);
-    }
+    HeroListRcVwAdapter.OnItemClickListener onItemClickListener = new HeroListRcVwAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick(View v, int position) {
+            Toast.makeText(FirstActivity.this, "Clicked " + position, Toast.LENGTH_SHORT).show();
+        }
+    };
 }
