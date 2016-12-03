@@ -20,9 +20,9 @@ import java.util.List;
 
 public class HeroListRcVwAdapter extends RecyclerView.Adapter<HeroListRcVwAdapter.HeroViewHolder> {
 
-    Context mContext;
-    List<HeroCharacter> heroesList;
-    OnItemClickListener mItemClickListener;
+    private Context mContext;
+    private List<HeroCharacter> heroesList;
+    private OnItemClickListener mItemClickListener;
 
     public HeroListRcVwAdapter(Context context) {
         this.mContext = context;

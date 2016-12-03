@@ -1,5 +1,6 @@
-package com.galante.martin.opentendsapplication;
+package com.galante.martin.opentendsapplication.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,12 +11,15 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.galante.martin.opentendsapplication.HeroCharacter;
+import com.galante.martin.opentendsapplication.HeroListRcVwAdapter;
+import com.galante.martin.opentendsapplication.R;
+import com.galante.martin.opentendsapplication.VolleySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -120,7 +124,10 @@ public class FirstActivity extends AppCompatActivity {
     HeroListRcVwAdapter.OnItemClickListener onItemClickListener = new HeroListRcVwAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(View v, int position) {
-            Toast.makeText(FirstActivity.this, "Clicked " + position, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(FirstActivity.this, "Clicked " + position, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(FirstActivity.this, SecondActivity.class);
+            intent.putExtra(String.valueOf(SecondActivity.EXTRA_PARAM_ID), position);
+            startActivity(intent);
         }
     };
 }

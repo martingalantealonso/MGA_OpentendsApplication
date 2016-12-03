@@ -9,6 +9,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.galante.martin.opentendsapplication.activities.FirstActivity;
+
 /**
  * Created by Martin on 02/12/2016.
  */
