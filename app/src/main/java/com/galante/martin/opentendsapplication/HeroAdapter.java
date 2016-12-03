@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+
 import java.util.ArrayList;
 
 /**
@@ -31,6 +34,12 @@ public class HeroAdapter extends ArrayAdapter<HeroCharacter> {
 
         txName.setText(character.hero_name);
         txDescription.setText(character.hero_description);
+
+        if (!character.hero_image.isEmpty()) {
+            NetworkImageView mNetworkImageView=(NetworkImageView)convertView.findViewById(R.id.network_image_view);
+            ImageLoader mImageLoader = VolleySingleton.getInstance(getContext()).getImageLoader();
+            mNetworkImageView.setImageUrl(character.hero_image,mImageLoader);
+        }
         return convertView;
     }
 }

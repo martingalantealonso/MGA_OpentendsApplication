@@ -10,16 +10,13 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.ListView;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -27,14 +24,14 @@ import java.util.ArrayList;
 
 public class FirstActivity extends AppCompatActivity {
 
-    private long tsLong = System.currentTimeMillis();
+    //TODO generate s String file
     private String ts = System.currentTimeMillis() + "";
     private String public_key = "cd31f94797faaf1c26a65f7a20cb086b";
     private String private_key = "33ae0776e56c8c24f8edf1f315c8c2e4dc68f609";
     private String hash = getMD5(ts + private_key + public_key);
     String limit = "10";
     String api_url = "http://gateway.marvel.com/v1/public/characters?ts=" + ts + "&apikey=" + public_key + "&hash=" + hash + "&limit=" + limit;
-    String api_uri_namestartswith;
+    String api_url_namestartswith;
     private EditText edtxt_filter;
     private int numCharacters = 0;
     private RecyclerView mRecyclerView;
@@ -47,7 +44,6 @@ public class FirstActivity extends AppCompatActivity {
         setTitle(R.string.first_activity_title);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.heroes_recycler_view);
-        //mStaggeredLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         edtxt_filter = (EditText) findViewById(R.id.ed_txt_search);
@@ -64,9 +60,11 @@ public class FirstActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 numCharacters = edtxt_filter.length();
-                if (numCharacters >= 3) {
-                    api_uri_namestartswith = "http://gateway.marvel.com/v1/public/characters?nameStartsWith=" + edtxt_filter.getText() + "&ts=" + ts + "&apikey=" + public_key + "&hash=" + hash;
-                    StringRequest stringRequest = new StringRequest(Request.Method.GET, api_uri_namestartswith,
+                if(numCharacters<3){
+                    mRecyclerView.setAdapter(null);
+                }else if (numCharacters >= 3) {
+                    api_url_namestartswith = "http://gateway.marvel.com/v1/public/characters?nameStartsWith=" + edtxt_filter.getText() + "&ts=" + ts + "&apikey=" + public_key + "&hash=" + hash;
+                    StringRequest stringRequest = new StringRequest(Request.Method.GET, api_url_namestartswith,
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
@@ -75,7 +73,12 @@ public class FirstActivity extends AppCompatActivity {
                                         JSONObject jsonResponse = new JSONObject((response));
                                         JSONObject jsonData = jsonResponse.getJSONObject("data");
                                         JSONArray jsonResults = jsonData.getJSONArray("results");
-                                        getHeroes(jsonResults);
+
+                                        ArrayList<HeroCharacter> heroCharacterList = new ArrayList<HeroCharacter>();
+                                        HeroAdapter adapter = new HeroAdapter(getApplicationContext(), heroCharacterList);
+                                        ArrayList<HeroCharacter> newCharacter = HeroCharacter.fromJson(jsonResults);
+                                        HeroListRcVwAdapter adapter2 = new HeroListRcVwAdapter(newCharacter);
+                                        mRecyclerView.setAdapter(adapter2);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -89,37 +92,12 @@ public class FirstActivity extends AppCompatActivity {
 
                     VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
                 }
+
             }
         });
 
 
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, api_url,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            Log.d("Response", response.toString());
-                            try {
-                                JSONObject jsonResponse = new JSONObject((response));
-                                JSONObject jsonData = jsonResponse.getJSONObject("data");
-                                JSONArray jsonResults = jsonData.getJSONArray("results");
 
-                                ArrayList<HeroCharacter> heroCharacterList = new ArrayList<HeroCharacter>();
-                                HeroAdapter adapter = new HeroAdapter(getApplicationContext(), heroCharacterList);
-                                ArrayList<HeroCharacter> newCharacter = HeroCharacter.fromJson(jsonResults);
-                                HeroListRcVwAdapter adapter2 = new HeroListRcVwAdapter(newCharacter);
-                                mRecyclerView.setAdapter(adapter2);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e("Response", error.toString());
-                }
-            });
-
-            VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
 
     }
 

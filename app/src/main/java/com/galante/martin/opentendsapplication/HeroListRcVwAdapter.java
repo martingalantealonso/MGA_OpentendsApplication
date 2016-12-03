@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+
 import java.util.List;
 
 /**
@@ -22,6 +25,23 @@ public class HeroListRcVwAdapter extends RecyclerView.Adapter<HeroListRcVwAdapte
         this.heroesList = heroes;
     }
 
+    public static class HeroViewHolder extends RecyclerView.ViewHolder {
+        CardView cv;
+        TextView heroName;
+        TextView heroDescription;
+        NetworkImageView heroimage;
+        ImageLoader mImageLoader;
+
+        HeroViewHolder(View itemView) {
+            super(itemView);
+            cv = (CardView) itemView.findViewById(R.id.heroCard);
+            heroName = (TextView) itemView.findViewById(R.id.text_view_name);
+            heroDescription = (TextView) itemView.findViewById(R.id.text_view_description);
+            heroimage = (NetworkImageView) itemView.findViewById(R.id.network_image_view);
+            mImageLoader = VolleySingleton.getInstance(itemView.getContext()).getImageLoader();
+        }
+    }
+
     @Override
     public HeroListRcVwAdapter.HeroViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_heroes, parent, false);
@@ -33,7 +53,9 @@ public class HeroListRcVwAdapter extends RecyclerView.Adapter<HeroListRcVwAdapte
     public void onBindViewHolder(HeroListRcVwAdapter.HeroViewHolder holder, int position) {
         holder.heroName.setText(heroesList.get(position).hero_name);
         holder.heroDescription.setText(heroesList.get(position).hero_description);
-        // personViewHolder.personPhoto.setImageResource(persons.get(i).photoId);
+        if (!heroesList.get(position).hero_image.isEmpty()) {
+            holder.heroimage.setImageUrl(heroesList.get(position).hero_image, holder.mImageLoader);
+        }
     }
 
     @Override
@@ -46,19 +68,6 @@ public class HeroListRcVwAdapter extends RecyclerView.Adapter<HeroListRcVwAdapte
         return heroesList.size();
     }
 
-    public static class HeroViewHolder extends RecyclerView.ViewHolder {
-        CardView cv;
-        TextView heroName;
-        TextView heroDescription;
-        //ImageView heroimage;
 
-        HeroViewHolder(View itemView) {
-            super(itemView);
-            cv = (CardView) itemView.findViewById(R.id.heroCard);
-            heroName = (TextView) itemView.findViewById(R.id.text_view_name);
-            heroDescription = (TextView) itemView.findViewById(R.id.text_view_description);
-            //personPhoto = (ImageView)itemView.findViewById(R.id.person_photo);
-        }
-    }
 
 }
