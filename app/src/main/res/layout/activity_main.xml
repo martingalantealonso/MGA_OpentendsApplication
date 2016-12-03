@@ -18,17 +18,18 @@
         android:ems="10"
         android:hint="@string/hint_name_to_search"
         android:inputType="textPersonName" />
-    <!--
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/heroes_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
-    -->
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/heroes_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight=".50" />
+
     <ListView
         android:id="@+id/lvHeroes"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_weight=".50">
 
     </ListView>
 </LinearLayout>

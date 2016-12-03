@@ -2,6 +2,7 @@ package com.galante.martin.opentendsapplication;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Editable;
@@ -9,7 +10,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -46,9 +46,10 @@ public class FirstActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle(R.string.first_activity_title);
 
-        //mRecyclerView = (RecyclerView) findViewById(R.id.heroes_list);
+        mRecyclerView = (RecyclerView) findViewById(R.id.heroes_recycler_view);
         //mStaggeredLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-        //mRecyclerView.setLayoutManager(mStaggeredLayoutManager);
+        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
         edtxt_filter = (EditText) findViewById(R.id.ed_txt_search);
 
         edtxt_filter.addTextChangedListener(new TextWatcher() {
@@ -90,6 +91,35 @@ public class FirstActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, api_url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Log.d("Response", response.toString());
+                            try {
+                                JSONObject jsonResponse = new JSONObject((response));
+                                JSONObject jsonData = jsonResponse.getJSONObject("data");
+                                JSONArray jsonResults = jsonData.getJSONArray("results");
+
+                                ArrayList<HeroCharacter> heroCharacterList = new ArrayList<HeroCharacter>();
+                                HeroAdapter adapter = new HeroAdapter(getApplicationContext(), heroCharacterList);
+                                ArrayList<HeroCharacter> newCharacter = HeroCharacter.fromJson(jsonResults);
+                                HeroListRcVwAdapter adapter2 = new HeroListRcVwAdapter(newCharacter);
+                                mRecyclerView.setAdapter(adapter2);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("Response", error.toString());
+                }
+            });
+
+            VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
 
     }
 
