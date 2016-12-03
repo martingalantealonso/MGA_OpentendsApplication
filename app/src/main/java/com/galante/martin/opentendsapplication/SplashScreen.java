@@ -16,15 +16,7 @@ import android.widget.LinearLayout;
 public class SplashScreen extends Activity {
 
     Thread splashTread;
-    private static final String TAG = "SplashScreen";
-
-    //TODO delete this if nothing is done
-    /*public void onAttachedToWindow() {
-        super.onAttachedToWindow();
-               //Window window = getWindow();
-        //window.setFormat(PixelFormat.RGBA_8888);
-    }
-    */
+    private static final String TAG = SplashScreen.class.getName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,25 +27,30 @@ public class SplashScreen extends Activity {
 
     private void StartAnimations() {
 
+        //Animation for the background layout
         Animation anim = AnimationUtils.loadAnimation(this, R.anim.alpha);
         anim.reset();
         LinearLayout l = (LinearLayout) findViewById(R.id.lin_lay);
         l.clearAnimation();
         l.startAnimation(anim);
 
+        //Animation for the image with the candidate's name
         anim = AnimationUtils.loadAnimation(this, R.anim.translate);
         anim.reset();
         ImageView iv = (ImageView) findViewById(R.id.splash);
         iv.clearAnimation();
         iv.startAnimation(anim);
 
+        //Sleep the thread for two seconds while the welcome screen is displayed
+        // and launch the FirstActivity
+
         splashTread = new Thread() {
             @Override
             public void run() {
                 try {
-                    sleep(2000); //Sleep the thread for two seconds while the welcome screen is displayed
+                    sleep(2000);
                     Intent intent = new Intent(SplashScreen.this, FirstActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);//launch the main activity with an animation
+                    intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);//launch the activity with an animation
                     startActivity(intent);
                     SplashScreen.this.finish(); //finish the SplashScreen
                 } catch (InterruptedException e) {
@@ -61,11 +58,8 @@ public class SplashScreen extends Activity {
                 } finally {
                     SplashScreen.this.finish();
                 }
-
             }
         };
         splashTread.start();
-
     }
-
 }
