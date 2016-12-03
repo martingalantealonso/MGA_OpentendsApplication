@@ -4,8 +4,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -30,7 +34,9 @@ public class FirstActivity extends AppCompatActivity {
     private String hash = getMD5(ts + private_key + public_key);
     String limit = "10";
     String api_url = "http://gateway.marvel.com/v1/public/characters?ts=" + ts + "&apikey=" + public_key + "&hash=" + hash + "&limit=" + limit;
-
+    String api_uri_namestartswith;
+    private EditText edtxt_filter;
+    private int numCharacters = 0;
     private RecyclerView mRecyclerView;
     private StaggeredGridLayoutManager mStaggeredLayoutManager;
 
@@ -43,30 +49,48 @@ public class FirstActivity extends AppCompatActivity {
         //mRecyclerView = (RecyclerView) findViewById(R.id.heroes_list);
         //mStaggeredLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         //mRecyclerView.setLayoutManager(mStaggeredLayoutManager);
+        edtxt_filter = (EditText) findViewById(R.id.ed_txt_search);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, api_url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("Response", response.toString());
-                       try {
-                            JSONObject jsonResponse=new JSONObject((response));
-                            JSONObject jsonData= jsonResponse.getJSONObject("data");
-                            JSONArray jsonResults=jsonData.getJSONArray("results");
-
-                           getHeroes(jsonResults);
-                        } catch (JSONException e) {
-                         e.printStackTrace();
-                        }
-
-                    }}, new Response.ErrorListener() {
+        edtxt_filter.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("Response", error.toString());
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                numCharacters = edtxt_filter.length();
+                if (numCharacters >= 3) {
+                    api_uri_namestartswith = "http://gateway.marvel.com/v1/public/characters?nameStartsWith=" + edtxt_filter.getText() + "&ts=" + ts + "&apikey=" + public_key + "&hash=" + hash;
+                    StringRequest stringRequest = new StringRequest(Request.Method.GET, api_uri_namestartswith,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    Log.d("Response", response.toString());
+                                    try {
+                                        JSONObject jsonResponse = new JSONObject((response));
+                                        JSONObject jsonData = jsonResponse.getJSONObject("data");
+                                        JSONArray jsonResults = jsonData.getJSONArray("results");
+                                        getHeroes(jsonResults);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e("Response", error.toString());
+                        }
+                    });
+
+                    VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
+                }
             }
         });
 
-        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
     }
 
     public static String getMD5(String input) {
@@ -90,7 +114,7 @@ public class FirstActivity extends AppCompatActivity {
         HeroAdapter adapter = new HeroAdapter(this, heroCharacterList);
         ArrayList<HeroCharacter> newCharacter = HeroCharacter.fromJson(jsonArray);
         adapter.addAll(newCharacter);
-        ListView listView=(ListView)findViewById(R.id.lvHeroes);
+        ListView listView = (ListView) findViewById(R.id.lvHeroes);
         listView.setAdapter(adapter);
     }
 }
