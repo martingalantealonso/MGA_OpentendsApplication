@@ -1,6 +1,5 @@
 package com.galante.martin.opentendsapplication;
 
-import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,21 +19,18 @@ import java.util.List;
 
 public class HeroListRcVwAdapter extends RecyclerView.Adapter<HeroListRcVwAdapter.HeroViewHolder> {
 
-    private Context mContext;
+
     private List<HeroCharacter> heroesList;
     private OnItemClickListener mItemClickListener;
 
-    public HeroListRcVwAdapter(Context context) {
-        this.mContext = context;
-    }
-
-    public HeroListRcVwAdapter(List<HeroCharacter> heroes) {
+  public HeroListRcVwAdapter(List<HeroCharacter> heroes) {
         this.heroesList = heroes;
     }
 
     public class HeroViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public LinearLayout placeHolder;
         CardView cv;
+        TextView heroID;
         TextView heroName;
         TextView heroDescription;
         NetworkImageView heroimage;
@@ -44,6 +40,7 @@ public class HeroListRcVwAdapter extends RecyclerView.Adapter<HeroListRcVwAdapte
             super(itemView);
             placeHolder = (LinearLayout) itemView.findViewById(R.id.main_holder);
             cv = (CardView) itemView.findViewById(R.id.heroCard);
+            heroID = (TextView) itemView.findViewById(R.id.text_view_id);
             heroName = (TextView) itemView.findViewById(R.id.text_view_name);
             heroDescription = (TextView) itemView.findViewById(R.id.text_view_description);
             heroimage = (NetworkImageView) itemView.findViewById(R.id.network_image_view);
@@ -55,7 +52,7 @@ public class HeroListRcVwAdapter extends RecyclerView.Adapter<HeroListRcVwAdapte
         @Override
         public void onClick(View v) {
             if (mItemClickListener != null) {
-                mItemClickListener.onItemClick(itemView, getPosition());
+                mItemClickListener.onItemClick(itemView, getLayoutPosition());
             }
         }
 
@@ -78,13 +75,14 @@ public class HeroListRcVwAdapter extends RecyclerView.Adapter<HeroListRcVwAdapte
 
     @Override
     public void onBindViewHolder(final HeroListRcVwAdapter.HeroViewHolder holder, int position) {
+        holder.heroID.setText(heroesList.get(position).hero_id);
         holder.heroName.setText(heroesList.get(position).hero_name);
         holder.heroDescription.setText(heroesList.get(position).hero_description);
         if (!heroesList.get(position).hero_image.isEmpty()) {
             holder.heroimage.setImageUrl(heroesList.get(position).hero_image, holder.mImageLoader);
 
         /*
-        //TODO try to solvethis
+        //TODO try to solve this -> Image not loaded when the palette is applied
             Bitmap bitmap = ((BitmapDrawable)holder.heroimage.getDrawable()).getBitmap();
             Palette.generateAsync(bitmap, new Palette.PaletteAsyncListener() {
                 public void onGenerated(Palette palette) {
@@ -94,6 +92,7 @@ public class HeroListRcVwAdapter extends RecyclerView.Adapter<HeroListRcVwAdapte
             });
 */
         }
+
     }
 
     @Override

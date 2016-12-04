@@ -11,6 +11,8 @@ import java.util.ArrayList;
  */
 
 public class HeroCharacter {
+
+    public String hero_id;
     public String hero_name;
     public String hero_description;
     public String hero_image;
@@ -18,6 +20,7 @@ public class HeroCharacter {
 
     public HeroCharacter(JSONObject object) {
         try {
+            this.hero_id=object.getString("id");
             this.hero_name = object.getString("name");
             this.hero_description = object.getString("description");
             this.hero_image="";
@@ -43,4 +46,5 @@ public class HeroCharacter {
         }
         return characters;
     }
+
 }

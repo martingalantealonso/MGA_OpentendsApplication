@@ -67,7 +67,6 @@ public class FirstActivity extends AppCompatActivity {
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         edtxt_filter = (EditText) findViewById(R.id.ed_txt_search);
-
         edtxt_filter.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -96,7 +95,7 @@ public class FirstActivity extends AppCompatActivity {
                                         ArrayList<HeroCharacter> newCharacter = HeroCharacter.fromJson(jsonResults);
                                         HeroListRcVwAdapter adapter2 = new HeroListRcVwAdapter(newCharacter);
                                         mRecyclerView.setAdapter(adapter2);
-                                        adapter2.setOnItemClickListener(onItemClickListener); //Add the clicl listener
+                                        adapter2.setOnItemClickListener(onItemClickListener); //Add the click listener
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -139,6 +138,7 @@ public class FirstActivity extends AppCompatActivity {
 
             LinearLayout placeNameHolder = (LinearLayout) v.findViewById(R.id.main_information_holder);
             NetworkImageView heroImage = (NetworkImageView) v.findViewById(R.id.network_image_view);
+            TextView heroID = (TextView) v.findViewById(R.id.text_view_id);
             TextView heroName = (TextView) v.findViewById(R.id.text_view_name);
             TextView heroDescription = (TextView) v.findViewById(R.id.text_view_description);
 
@@ -150,11 +150,10 @@ public class FirstActivity extends AppCompatActivity {
                 _bitmap.compress(Bitmap.CompressFormat.PNG, 50, _bs);
             }
             Intent transitionIntent = new Intent(FirstActivity.this, SecondActivity.class);
-            transitionIntent.putExtra(String.valueOf(SecondActivity.EXTRA_PARAM_ID), position);
+            transitionIntent.putExtra(String.valueOf(SecondActivity.EXTRA_PARAM_HERO_ID), heroID.getText().toString());
             transitionIntent.putExtra(String.valueOf(SecondActivity.EXTRA_PARAM_NAME), heroName.getText().toString());
             transitionIntent.putExtra(String.valueOf(SecondActivity.EXTRA_PARAM_DESCRIPTION), heroDescription.getText().toString());
             transitionIntent.putExtra(String.valueOf(SecondActivity.EXTRA_PARAM_IMAGE), _bs.toByteArray());
-
 
             View navigationBar = findViewById(android.R.id.navigationBarBackground);
             View statusBar = findViewById(android.R.id.statusBarBackground);
