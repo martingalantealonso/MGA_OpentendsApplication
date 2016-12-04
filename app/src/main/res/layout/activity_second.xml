@@ -12,16 +12,19 @@
         android:id="@+id/main_information_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="100dp"
         android:orientation="horizontal"
         android:transitionName="tNameHolder">
 
+
         <ImageView
+            android:contentDescription="@string/second_activity_imageview_hero"
             android:id="@+id/image_view"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight=".25"
-            />
+            android:scaleType="centerCrop" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -65,7 +68,7 @@
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/text_view_padding"
             android:paddingTop="@dimen/text_view_padding"
-            android:text="Links"
+            android:text="@string/links"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textStyle="normal|bold" />
 
@@ -75,6 +78,7 @@
             android:orientation="horizontal">
 
             <Button
+                style="?android:attr/buttonBarButtonStyle"
                 android:id="@+id/btn_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -86,6 +90,7 @@
                 android:visibility="invisible" />
 
             <Button
+                style="?android:attr/buttonBarButtonStyle"
                 android:id="@+id/btn_wiki"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -97,6 +102,7 @@
                 android:visibility="invisible" />
 
             <Button
+                style="?android:attr/buttonBarButtonStyle"
                 android:id="@+id/btn_comics"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -114,11 +120,12 @@
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/text_view_padding"
             android:paddingTop="@dimen/text_view_padding"
-            android:text="Recursos"
+            android:text="@string/recursos"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textStyle="normal|bold" />
 
         <TabHost
+            android:id="@android:id/tabhost"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -142,10 +149,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
-                        <TextView android:id="@+id/textView1"
-                            android:text="Contenido Tab 1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/comic_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/light_gray"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -153,12 +162,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
-                        <TextView android:id="@+id/textView2"
-                            android:text="Contenido Tab 2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
 
+                    </LinearLayout>
                 </FrameLayout>
             </LinearLayout>
         </TabHost>
