@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.Palette;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -34,7 +35,7 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_second);
         findViews();
         loadHeroInfo();
-        getPhoto();
+
     }
 
 
@@ -61,14 +62,23 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         textViewDescription.setText(getIntent().getExtras().getString(EXTRA_PARAM_DESCRIPTION));
         Bitmap _bitmap = BitmapFactory.decodeByteArray(getIntent().getByteArrayExtra(EXTRA_PARAM_IMAGE), 0, getIntent().getByteArrayExtra(EXTRA_PARAM_IMAGE).length);
         imageView.setImageBitmap(_bitmap);
+        //TODO change this?
+        if (_bitmap != null) {
+            colorize(_bitmap);
+        }
+        //TODO delete this
         //AlphaAnimation alphaAnimation = new AlphaAnimation(0.0f, 1.0f);
         //alphaAnimation.setDuration(1000);
         //imageView.startAnimation(alphaAnimation);
     }
 
 
-    private void getPhoto() {
-
+    private void colorize(Bitmap _bitmap) {
+        int default_color = getResources().getColor(R.color.light_gray);
+        Palette mPalette = Palette.from(_bitmap).generate();
+        mainInformationHolder.setBackgroundColor(mPalette.getLightVibrantColor(default_color));
+        //View view = this.getWindow().getDecorView();
+        //view.setBackgroundColor(mPalette.getLightMutedColor(default_color));
     }
 
     @Override
@@ -81,4 +91,4 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
             // Handle clicks for btnComics
         }
     }
-    }
+}

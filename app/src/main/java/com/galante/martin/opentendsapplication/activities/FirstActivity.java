@@ -163,6 +163,7 @@ public class FirstActivity extends AppCompatActivity {
             Pair<View, String> navPair = Pair.create(navigationBar, Window.NAVIGATION_BAR_BACKGROUND_TRANSITION_NAME);
             Pair<View, String> statusPair = Pair.create(statusBar, Window.STATUS_BAR_BACKGROUND_TRANSITION_NAME);
 
+
             // If the device has NavigationBar
             ActivityOptionsCompat options;
             if (ViewConfiguration.get(getApplicationContext()).hasPermanentMenuKey()) {
