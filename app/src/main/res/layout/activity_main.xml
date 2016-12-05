@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -12,10 +11,9 @@
     tools:context="com.galante.martin.opentendsapplication.activities.FirstActivity">
 
     <TextView
-        android:text="Busca tu superheroe"
+        android:text="@string/busca_tu_superheroe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textView"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textAlignment="center"
         android:textStyle="normal|bold"
@@ -27,12 +25,12 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/hint_name_to_search"
-        android:inputType="textPersonName" />
+        android:inputType="textCapWords|textPersonName" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/heroes_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_weight=".50" />
 
 

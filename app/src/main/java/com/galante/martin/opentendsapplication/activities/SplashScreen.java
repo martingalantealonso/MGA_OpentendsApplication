@@ -1,4 +1,4 @@
-package com.galante.martin.opentendsapplication;
+package com.galante.martin.opentendsapplication.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,10 +9,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.galante.martin.opentendsapplication.activities.FirstActivity;
+import com.galante.martin.opentendsapplication.R;
 
 /**
- * Created by Martin on 02/12/2016.
+ * Created by Martin Galante on 02/12/2016.
+ *
  */
 
 public class SplashScreen extends Activity {

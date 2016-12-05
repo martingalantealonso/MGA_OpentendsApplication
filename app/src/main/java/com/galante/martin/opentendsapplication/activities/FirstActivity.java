@@ -11,7 +11,6 @@ import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -27,35 +26,30 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
-import com.galante.martin.opentendsapplication.HeroCharacter;
-import com.galante.martin.opentendsapplication.HeroListRcVwAdapter;
 import com.galante.martin.opentendsapplication.R;
-import com.galante.martin.opentendsapplication.VolleySingleton;
+import com.galante.martin.opentendsapplication.adapters.HeroListRcVwAdapter;
+import com.galante.martin.opentendsapplication.adapters.VolleySingleton;
+import com.galante.martin.opentendsapplication.data.HeroCharacter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+
+import static com.galante.martin.opentendsapplication.data.GlobalData.hash;
+import static com.galante.martin.opentendsapplication.data.GlobalData.public_key;
+import static com.galante.martin.opentendsapplication.data.GlobalData.ts;
 
 public class FirstActivity extends AppCompatActivity {
 
-    //TODO generate s String file
-    private String ts = System.currentTimeMillis() + "";
-    private String public_key = "cd31f94797faaf1c26a65f7a20cb086b";
-    private String private_key = "33ae0776e56c8c24f8edf1f315c8c2e4dc68f609";
-    private String hash = getMD5(ts + private_key + public_key);
-    String limit = "10";
-    String api_url = "http://gateway.marvel.com/v1/public/characters?ts=" + ts + "&apikey=" + public_key + "&hash=" + hash + "&limit=" + limit;
+
+
     String api_url_namestartswith;
     private EditText edtxt_filter;
     private int numCharacters = 0;
     private RecyclerView mRecyclerView;
-    private StaggeredGridLayoutManager mStaggeredLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +81,7 @@ public class FirstActivity extends AppCompatActivity {
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
-                                    Log.d("Response", response.toString());
+                                    Log.d("Response", response);
                                     try {
                                         JSONObject jsonResponse = new JSONObject((response));
                                         JSONObject jsonData = jsonResponse.getJSONObject("data");
@@ -116,22 +110,6 @@ public class FirstActivity extends AppCompatActivity {
 
     }
 
-    public static String getMD5(String input) {
-        try {
-            Log.i("string = ", input);
-            MessageDigest mMessageDigest = MessageDigest.getInstance("MD5");
-            byte[] messageDigest = mMessageDigest.digest(input.getBytes());
-            BigInteger number = new BigInteger(1, messageDigest);
-            String hashtext = number.toString(16);
-            while (hashtext.length() < 32) {
-                hashtext = "0" + hashtext;
-            }
-            return hashtext;
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     HeroListRcVwAdapter.OnItemClickListener onItemClickListener = new HeroListRcVwAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(View v, int position) {
@@ -155,24 +133,26 @@ public class FirstActivity extends AppCompatActivity {
             transitionIntent.putExtra(String.valueOf(SecondActivity.EXTRA_PARAM_DESCRIPTION), heroDescription.getText().toString());
             transitionIntent.putExtra(String.valueOf(SecondActivity.EXTRA_PARAM_IMAGE), _bs.toByteArray());
 
-            View navigationBar = findViewById(android.R.id.navigationBarBackground);
-            View statusBar = findViewById(android.R.id.statusBarBackground);
 
             Pair<View, String> holderPair = Pair.create((View) placeNameHolder, "tNameHolder");
-            Pair<View, String> navPair = Pair.create(navigationBar, Window.NAVIGATION_BAR_BACKGROUND_TRANSITION_NAME);
-            Pair<View, String> statusPair = Pair.create(statusBar, Window.STATUS_BAR_BACKGROUND_TRANSITION_NAME);
-
-
-            // If the device has NavigationBar
-            ActivityOptionsCompat options;
-            if (ViewConfiguration.get(getApplicationContext()).hasPermanentMenuKey()) {
-                options = ActivityOptionsCompat.makeSceneTransitionAnimation(FirstActivity.this, holderPair, navPair, statusPair);
-            } else {
-                options = ActivityOptionsCompat.makeSceneTransitionAnimation(FirstActivity.this, holderPair, statusPair);
+            Pair<View, String> navPair=null;
+            Pair<View, String> statusPair=null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                View navigationBar = findViewById(android.R.id.navigationBarBackground);
+                View statusBar = findViewById(android.R.id.statusBarBackground);
+                navPair = Pair.create(navigationBar, Window.NAVIGATION_BAR_BACKGROUND_TRANSITION_NAME);
+                statusPair= Pair.create(statusBar, Window.STATUS_BAR_BACKGROUND_TRANSITION_NAME);
             }
-            ActivityCompat.startActivity(FirstActivity.this, transitionIntent, options.toBundle());
-        }
+                // If the device has NavigationBar
+                ActivityOptionsCompat options;
+                if (ViewConfiguration.get(getApplicationContext()).hasPermanentMenuKey()) {
+                    options = ActivityOptionsCompat.makeSceneTransitionAnimation(FirstActivity.this, holderPair, navPair, statusPair);
+                } else {
+                    options = ActivityOptionsCompat.makeSceneTransitionAnimation(FirstActivity.this, holderPair, statusPair);
+                }
+                ActivityCompat.startActivity(FirstActivity.this, transitionIntent, options.toBundle());
 
+        }
 
         public boolean hasNavBar(Resources resources) {
             int id = resources.getIdentifier("config_showNavigationBar", "bool", "android");

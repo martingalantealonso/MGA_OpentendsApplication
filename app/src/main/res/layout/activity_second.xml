@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_second"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -18,12 +17,12 @@
 
 
         <ImageView
-            android:contentDescription="@string/second_activity_imageview_hero"
             android:id="@+id/image_view"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight=".25"
+            android:contentDescription="@string/second_activity_imageview_hero"
             android:scaleType="centerCrop" />
 
         <LinearLayout
@@ -63,7 +62,6 @@
         android:paddingRight="@dimen/activity_horizontal_margin">
 
         <TextView
-            android:id="@+id/txtvw_links"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/text_view_padding"
@@ -78,8 +76,8 @@
             android:orientation="horizontal">
 
             <Button
-                style="?android:attr/buttonBarButtonStyle"
                 android:id="@+id/btn_details"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -90,8 +88,8 @@
                 android:visibility="invisible" />
 
             <Button
-                style="?android:attr/buttonBarButtonStyle"
                 android:id="@+id/btn_wiki"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -102,8 +100,8 @@
                 android:visibility="invisible" />
 
             <Button
-                style="?android:attr/buttonBarButtonStyle"
                 android:id="@+id/btn_comics"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -115,7 +113,6 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/txtvw_resources"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/text_view_padding"
@@ -154,7 +151,7 @@
                             android:id="@+id/comic_list"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@color/light_gray"/>
+                            android:background="@color/light_gray" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -163,6 +160,11 @@
                         android:layout_height="match_parent"
                         android:orientation="vertical">
 
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/event_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/light_gray" />
                     </LinearLayout>
                 </FrameLayout>
             </LinearLayout>

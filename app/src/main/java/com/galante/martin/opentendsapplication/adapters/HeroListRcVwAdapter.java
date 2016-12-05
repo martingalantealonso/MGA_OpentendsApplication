@@ -1,4 +1,4 @@
-package com.galante.martin.opentendsapplication;
+package com.galante.martin.opentendsapplication.adapters;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -10,11 +10,14 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.galante.martin.opentendsapplication.R;
+import com.galante.martin.opentendsapplication.data.HeroCharacter;
 
 import java.util.List;
 
 /**
  * Created by Martin on 03/12/2016.
+ *
  */
 
 public class HeroListRcVwAdapter extends RecyclerView.Adapter<HeroListRcVwAdapter.HeroViewHolder> {
@@ -23,7 +26,7 @@ public class HeroListRcVwAdapter extends RecyclerView.Adapter<HeroListRcVwAdapte
     private List<HeroCharacter> heroesList;
     private OnItemClickListener mItemClickListener;
 
-  public HeroListRcVwAdapter(List<HeroCharacter> heroes) {
+    public HeroListRcVwAdapter(List<HeroCharacter> heroes) {
         this.heroesList = heroes;
     }
 
@@ -80,17 +83,6 @@ public class HeroListRcVwAdapter extends RecyclerView.Adapter<HeroListRcVwAdapte
         holder.heroDescription.setText(heroesList.get(position).hero_description);
         if (!heroesList.get(position).hero_image.isEmpty()) {
             holder.heroimage.setImageUrl(heroesList.get(position).hero_image, holder.mImageLoader);
-
-        /*
-        //TODO try to solve this -> Image not loaded when the palette is applied
-            Bitmap bitmap = ((BitmapDrawable)holder.heroimage.getDrawable()).getBitmap();
-            Palette.generateAsync(bitmap, new Palette.PaletteAsyncListener() {
-                public void onGenerated(Palette palette) {
-                    int bgColor = palette.getMutedColor(mContext.getResources().getColor(android.R.color.black));
-                    holder.placeHolder.setBackgroundColor(bgColor);
-                }
-            });
-*/
         }
 
     }

@@ -1,4 +1,4 @@
-package com.galante.martin.opentendsapplication;
+package com.galante.martin.opentendsapplication.data;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -7,7 +7,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created by Martin on 02/12/2016.
+ * Created by Martin Galante on 02/12/2016.
+ *
  */
 
 public class HeroCharacter {
@@ -36,7 +37,7 @@ public class HeroCharacter {
     }
 
     public static ArrayList<HeroCharacter> fromJson(JSONArray jsonObjects) {
-        ArrayList<HeroCharacter> characters = new ArrayList<HeroCharacter>();
+        ArrayList<HeroCharacter> characters = new ArrayList<>();
         for (int i = 0; i < jsonObjects.length(); i++) {
             try {
                 characters.add(new HeroCharacter(jsonObjects.getJSONObject(i)));

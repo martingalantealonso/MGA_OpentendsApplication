@@ -1,7 +1,8 @@
-package com.galante.martin.opentendsapplication;
+package com.galante.martin.opentendsapplication.adapters;
 
 /**
- * Created by Martin on 02/12/2016.
+ * Created by Martin Galante on 02/12/2016.
+ *
  */
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -21,7 +22,7 @@ public class VolleySingleton {
         requestQueue = Volley.newRequestQueue(context);
 
         imageLoader = new ImageLoader(requestQueue, new ImageLoader.ImageCache() {
-            private final LruCache<String, Bitmap> cache = new LruCache<String, Bitmap>(20);
+            private final LruCache<String, Bitmap> cache = new LruCache<>(20);
 
 
             @Override

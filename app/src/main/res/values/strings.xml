@@ -1,14 +1,17 @@
 <resources>
-    <string name="app_name">OpentendsApplication</string>
+    <string name="app_name">MGA Application</string>
+    <string name="comic_name">text_view_comic_name</string>
     <string name="Nombre">text_view_hero_name</string>
     <string name="Descripción">text_view_hero_description</string>
+    <string name="comic_description">text_view_comic_description</string>
     <string name="hint_name_to_search">nombre a buscar</string>
     <string name="first_activity_title">Busca tu super-héroe</string>
-
-    <string name="title_activity_fullscreen">FullscreenActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="details">Detalles</string>
     <string name="wiki">Wiki</string>
     <string name="comics">Comics</string>
+    <string name="second_activity_imageview_hero">second_activity_imageview_hero</string>
+    <string name="links">Links</string>
+    <string name="recursos">Recursos</string>
+    <string name="busca_tu_superheroe">Busca tu superheroe</string>
+    <string name="candidate_name">candidate_name</string>
 </resources>
